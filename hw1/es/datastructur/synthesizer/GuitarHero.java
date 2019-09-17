@@ -7,6 +7,7 @@ public class GuitarHero {
 
     public static void main(String[] args) {
         String keyboard = "q2we4r5ty7u8i9op-[=zxdcfvgbnjmk,.;/' ";
+        String[] megalovania = new String[]{"r","r","z","i","8","u","y","r","y","u","e","e","z","i","8","u","y","r","y","u","r","w","w","i","8","u","y","r","y","u","3","3","z","i","8","u","y","r","y","u"};
         GuitarString[] guitarStringObjects = new GuitarString[37];
         GuitarString stringX;
         GuitarString stringToPlay;

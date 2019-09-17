@@ -1,4 +1,4 @@
-package huglife;
+//package huglife;
 
 public class Position {
     final int x;

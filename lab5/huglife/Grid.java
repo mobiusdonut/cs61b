@@ -1,4 +1,4 @@
-package huglife;
+//package huglife;
 
 import java.util.Queue;
 import java.util.ArrayDeque;
@@ -516,4 +516,3 @@ public class Grid {
         }
     }
 }
-

@@ -1,4 +1,4 @@
-package huglife;
+//package huglife;
 /*************************************************************************
  *  Compilation:  javac In.java
  *  Execution:    java In   (basic test --- see source for required files)
@@ -60,12 +60,12 @@ public final class In {
     // assume language = English, country = US for consistency with System.out.
     private static final Locale LOCALE = Locale.US;
 
-    // the default token separator; we maintain the invariant that this value 
+    // the default token separator; we maintain the invariant that this value
     // is held by the scanner's delimiter between calls
     private static final Pattern WHITESPACE_PATTERN
             = Pattern.compile("\\p{javaWhitespace}+");
 
-    // makes whitespace characters significant 
+    // makes whitespace characters significant
     private static final Pattern EMPTY_PATTERN
             = Pattern.compile("");
 

@@ -1,4 +1,4 @@
-package huglife;
+//package huglife;
 
 /*************************************************************************
  *  Compilation:  javac StdDraw.java
@@ -9,7 +9,7 @@ package huglife;
  *  allows you to create drawings consisting of points, lines, and curves
  *  in a window on your computer and to save the drawings to a file.
  *
- *  Developed by Kevin Wayne (best dude award 2011-2014) at Princeton 
+ *  Developed by Kevin Wayne (best dude award 2011-2014) at Princeton
  *  University, who so humbly didn't put his name anywhere in this file
  *  that it felt necessary to give him this award.
  *

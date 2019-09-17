@@ -1,6 +1,6 @@
-package huglife;
+//package huglife;
 
-import creatures.*;
+//import creatures.*;
 
 /**
  * World facing class for HugLife simulator.
@@ -124,7 +124,8 @@ public class HugLife {
      * @return a newly initialized HugLife
      */
     public static HugLife readWorld(String worldName) {
-        In in = new In("huglife/" + worldName + ".world");
+        //In in = new In("huglife/" + worldName + ".world");
+        In in = new In(worldName + ".world");
         HugLife h = new HugLife(WORLD_SIZE);
         while (!in.isEmpty()) {
             String creature = in.readString();
@@ -132,9 +133,9 @@ public class HugLife {
             int y = in.readInt();
             switch (creature) {
                 //Uncomment this when you're ready to test out your clorus class
-                //case "clorus":
-                //    h.addCreature(x, y, new Clorus(1));
-                //    break;
+                case "clorus":
+                    h.addCreature(x, y, new Clorus(1));
+                    break;
                 case "plip":
                     h.addCreature(x, y, new Plip());
                     break;
@@ -154,6 +155,7 @@ public class HugLife {
             System.out.println("Usage: java huglife.HugLife [worldname]");
             return;
         }
+        System.out.println(args[0]);
         HugLife h = readWorld(args[0]);
         // HugLife h = new HugLife(WORLD_SIZE);
         // h.initialize(args[0]); DON'T USE ME
@@ -163,6 +165,7 @@ public class HugLife {
         } else {
             h.simulate(MAX_TICS, TICS_BETWEEN_DRAW);
         }
+
     }
 
     /**
