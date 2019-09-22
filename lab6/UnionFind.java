@@ -1,51 +1,83 @@
 public class UnionFind {
 
-    // TODO - Add instance variables?
+    private int[] parent; // id[i] = parent of i
+    private int[] size; // sz[i] = number of objects in subtree rooted at i
+    private int count; // number of components
 
-    /* Creates a UnionFind data structure holding n vertices. Initially, all
-       vertices are in disjoint sets. */
-    public UnionFind(int n) {
-        // TODO
+    /**
+     * Create an empty union find data structure with N isolated sets.
+     *
+     * @throws java.lang.IllegalArgumentException
+     *             if N < 0
+     */
+    public UnionFind(int N) {
+        if (N < 0) {
+            throw new IllegalArgumentException();
+        }
+        count = N;
+        parent = new int[N];
+        size = new int[N];
+        for (int i = 0; i < N; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
     }
 
-    /* Throws an exception if v1 is not a valid index. */
-    private void validate(int vertex) {
-        // TODO
+    /**
+     * Return the id of component corresponding to object p.
+     *
+     * @throws java.lang.IndexOutOfBoundsException
+     *             unless 0 <= p < N
+     */
+    public int find(int p) {
+        if (p < 0 || p >= parent.length) {
+            throw new IndexOutOfBoundsException();
+        }
+        while (p != parent[p]) {
+            parent[p] = parent[parent[p]]; // implements path compression
+            p = parent[p];
+        }
+        return p;
     }
 
-    /* Returns the size of the set v1 belongs to. */
-    public int sizeOf(int v1) {
-        // TODO
-        return -1;
+    /**
+     * Return the number of disjoint sets.
+     */
+    public int count() {
+        return count;
     }
 
-    /* Returns the parent of v1. If v1 is the root of a tree, returns the
-       negative size of the tree for which v1 is the root. */
-    public int parent(int v1) {
-        // TODO
-        return -1;
+    /**
+     * Are objects p and q in the same set?
+     *
+     * @throws java.lang.IndexOutOfBoundsException
+     *             unless both 0 <= p < N and 0 <= q < N
+     */
+    public boolean connected(int p, int q) {
+        return find(p) == find(q);
     }
 
-    /* Returns true if nodes v1 and v2 are connected. */
-    public boolean connected(int v1, int v2) {
-        // TODO
-        return false;
-    }
+    /**
+     * Replace sets containing p and q with their union.
+     *
+     * @throws java.lang.IndexOutOfBoundsException
+     *             unless both 0 <= p < N and 0 <= q < N
+     */
+    public void union(int p, int q) {
+        int i = find(p);
+        int j = find(q);
+        if (i == j) {
+            return;
+        }
 
-    /* Connects two elements v1 and v2 together. v1 and v2 can be any valid 
-       elements, and a union-by-size heuristic is used. If the sizes of the sets
-       are equal, tie break by connecting v1's root to v2's root. Unioning a 
-       vertex with itself or vertices that are already connected should not 
-       change the sets but may alter the internal structure of the data. */
-    public void union(int v1, int v2) {
-        // TODO
+        // make smaller root point to larger one
+        if (size[i] < size[j]) {
+            parent[i] = j;
+            size[j] += size[i];
+        } else {
+            parent[j] = i;
+            size[i] += size[j];
+        }
+        count--;
     }
-
-    /* Returns the root of the set V belongs to. Path-compression is employed
-       allowing for fast search-time. */
-    public int find(int vertex) {
-        // TODO
-        return -1;
-    }
-
 }
