@@ -18,4 +18,9 @@ public class BubbleGridTest {
         BubbleGrid sol = new BubbleGrid(grid);
         assertArrayEquals(expected, sol.popBubbles(darts));
     }
+
+    public static void main(String[] args) {
+      BubbleGridTest b = new BubbleGridTest();
+      b.testBasic();
+    }
 }

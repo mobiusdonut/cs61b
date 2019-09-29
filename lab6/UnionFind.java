@@ -10,14 +10,14 @@ public class UnionFind {
      * @throws java.lang.IllegalArgumentException
      *             if N < 0
      */
-    public UnionFind(int N) {
-        if (N < 0) {
+    public UnionFind(int n) {
+        if (n < 0) {
             throw new IllegalArgumentException();
         }
-        count = N;
-        parent = new int[N];
-        size = new int[N];
-        for (int i = 0; i < N; i++) {
+        count = n;
+        parent = new int[n];
+        size = new int[n];
+        for (int i = 0; i < n; i++) {
             parent[i] = i;
             size[i] = 1;
         }
@@ -29,15 +29,26 @@ public class UnionFind {
      * @throws java.lang.IndexOutOfBoundsException
      *             unless 0 <= p < N
      */
-    public int find(int p) {
-        if (p < 0 || p >= parent.length) {
+
+    public void validate(int v1) {
+      if (v1 < 0 || v1 >= parent.length) {
+          throw new IndexOutOfBoundsException();
+      }
+    }
+
+    public int sizeOf(int v1) {
+      return size[parent[v1]];
+    }
+
+    public int find(int v1) {
+        if (v1 < 0 || v1 >= parent.length) {
             throw new IndexOutOfBoundsException();
         }
-        while (p != parent[p]) {
-            parent[p] = parent[parent[p]]; // implements path compression
-            p = parent[p];
+        while (v1 != parent[v1]) {
+            parent[v1] = parent[parent[v1]]; // implements path compression
+            v1 = parent[v1];
         }
-        return p;
+        return v1;
     }
 
     /**
@@ -53,8 +64,8 @@ public class UnionFind {
      * @throws java.lang.IndexOutOfBoundsException
      *             unless both 0 <= p < N and 0 <= q < N
      */
-    public boolean connected(int p, int q) {
-        return find(p) == find(q);
+    public boolean connected(int v1, int v2) {
+        return find(v1) == find(v2);
     }
 
     /**
@@ -63,9 +74,9 @@ public class UnionFind {
      * @throws java.lang.IndexOutOfBoundsException
      *             unless both 0 <= p < N and 0 <= q < N
      */
-    public void union(int p, int q) {
-        int i = find(p);
-        int j = find(q);
+    public void union(int v1, int v2) {
+        int i = find(v1);
+        int j = find(v2);
         if (i == j) {
             return;
         }
@@ -79,5 +90,13 @@ public class UnionFind {
             size[i] += size[j];
         }
         count--;
+    }
+
+    public int[] getParent() {
+      return parent;
+    }
+
+    public int[] getSize() {
+      return size;
     }
 }
