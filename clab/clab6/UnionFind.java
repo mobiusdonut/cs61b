@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class UnionFind {
     private int[] parent;   // parent[i] = parent of i
     private int[] size;     // size[i] = number of sites in subtree rooted at i
@@ -85,7 +87,7 @@ public class UnionFind {
         if (rootP == rootQ) return;
 
         // make smaller root point to larger one
-        if (size[rootP] < size[rootQ]) {
+        if (rootP < rootQ) {
             parent[rootP] = rootQ;
             size[rootQ] += size[rootP];
         }
@@ -96,7 +98,9 @@ public class UnionFind {
         count--;
     }
 
-
+    public String toString() {
+      return Arrays.toString(parent) + "\n" + Arrays.toString(size) + "\n";
+    }
     /**
      * Reads in a sequence of pairs of integers (between 0 and n-1) from standard input,
      * where each integer represents some object;

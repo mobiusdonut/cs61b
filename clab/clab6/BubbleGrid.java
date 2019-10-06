@@ -22,9 +22,12 @@ public class BubbleGrid {
                 }
             }
         }
+        System.out.println(bubbleCount);
         //stores dimensions of grid + result
         int row = grid.length;
         int column = grid[0].length;
+        System.out.println(row);
+        System.out.println(column);
         int[] result = new int[darts.length];
         //stores whether connection exists for loop checking
         boolean exist = false;
@@ -35,12 +38,15 @@ public class BubbleGrid {
         //sets up UnionFinder
         UnionFind Bubbles = new UnionFind(row * column);
 
+        System.out.println(Bubbles);
         for (int d = 0; d < darts.length; d++) {
-            //subtracts 1 if popped at top
+            //subtracts 1 if not popped at top
             if (darts[d][0] == 0) {
+                  System.out.println("at top");
                   temp = bubbleCount;
-              }
+            }
             else {
+                  System.out.println("not at top");
                   temp = bubbleCount - 1;
             }
             //stores 0 if no bubbles popped
@@ -102,8 +108,9 @@ public class BubbleGrid {
                         }
                         exist_column = true;
                     }
+                    System.out.println(Bubbles);
                 }
-                //second run-through, going downwards
+                //second run-through, with check in place for previously checked
                 else {
                     do {
                         exist_loop = false;
@@ -178,17 +185,22 @@ public class BubbleGrid {
                                 exist_column = true;
                             }
                         }
+                        System.out.println(Bubbles);
                     } while (exist_loop);
                 }
             }
+            //sets popped back to 1, runs through to find unpopped and subtracts
             grid[darts[d][0]][darts[d][1]] = 1;
+            System.out.println(temp);
             for (int k = 0; k < column; k++) {
                 if (grid[0][k] == 1) {
+                    System.out.println(Bubbles.sizeOf(k));
                     temp = temp - Bubbles.sizeOf(k);
                 }
             }
             result[d] = temp;
             Bubbles = new UnionFind(row * column);
+            System.out.println("");
             }
     return result;
     }
