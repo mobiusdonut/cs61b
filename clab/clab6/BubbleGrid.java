@@ -13,8 +13,13 @@ public class BubbleGrid {
      * are unique, valid locations in the grid. Must be non-destructive
      * and have no side-effects to grid. */
     public int[] popBubbles(int[][] darts) {
-        //counts number of bubbles
         int bubbleCount = 0;
+        int row = grid.length;
+        int column = grid[0].length;
+        int[] result = new int[darts.length];
+        boolean exist = false;
+        boolean exist_column = false;
+        boolean exist_loop = false;
         for (int[] r : grid) {
             for (int c : r) {
                 if (c == 1) {
@@ -22,81 +27,57 @@ public class BubbleGrid {
                 }
             }
         }
-        System.out.println(bubbleCount);
-        //stores dimensions of grid + result
-        int row = grid.length;
-        int column = grid[0].length;
-        System.out.println(row);
-        System.out.println(column);
-        int[] result = new int[darts.length];
-        //stores whether connection exists for loop checking
-        boolean exist = false;
-        boolean exist_column = false;
-        boolean exist_loop = false;
-        //stores initial bubble count
         int temp;
-        //sets up UnionFinder
         UnionFind Bubbles = new UnionFind(row * column);
-
-        System.out.println(Bubbles);
-        for (int d = 0; d < darts.length; d++) {
-            //subtracts 1 if not popped at top
-            if (darts[d][0] == 0) {
-                  System.out.println("at top");
-                  temp = bubbleCount;
+        for (int i = 0; i < darts.length; i++) {
+            if (darts[i][0] == 0) {
+                temp = bubbleCount;
+            } else {
+                temp = bubbleCount - 1;
             }
-            else {
-                  System.out.println("not at top");
-                  temp = bubbleCount - 1;
+            if (grid[darts[i][0]][darts[i][1]] == 0) {
+                result[i] = 0;
+                continue;
             }
-            //stores 0 if no bubbles popped
-            if (grid[darts[d][0]][darts[d][1]] == 0) {
-                  result[d] = 0;
-                  continue;
-            }
-            for (int i = 0; i < 2; i++) {
-                //first run-through, going upwards
-                if (i == 0) {
-                    //sets popped bubble to 0
+            for (int z = 0; z < 2; z++) {
+                if (z == 0) {
                     grid[darts[i][0]][darts[i][1]] = 0;
-                    //checks for connected bubbles,
-                    for (int x = 1; x < row; x++) {
-                        for (int y = 0; y < column; y++) {
-                            if (grid[x][y] == 1) {
-                                //check for connected bubbles upwards then iterates from top to find connection
-                                if (grid[x - 1][y] == 1) {
-                                    for (int a = 0; a < column; a++) {
-                                        if (Bubbles.connected(a, (x - 1) * column + y)) {
-                                            Bubbles.union(x * column + y, (x - 1) * column + y);
+                    for (int k = 1; k < row; k++) {
+                        for (int x = 0; x < column; x++) {
+                            if (grid[k][x] == 1) {
+                                //check up if filled
+                                if (grid[k - 1][x] == 1) {
+                                    for (int y = 0; y < column; y++) {
+                                        if (Bubbles.connected(y, (k - 1) * column + x)) {
+                                            Bubbles.union(k * column + x, (k - 1) * column + x);
                                             exist = true;
                                             exist_loop = true;
                                             break;
                                         }
                                     }
                                 }
-                                //check for connected bubbles left if not at left edge then iterates from top to find connection and connection not already found
-                                if (y != 0 && grid[x][y - 1] == 1 && !exist) {
-                                    for (int a = 0; a < column; a++) {
-                                        if (Bubbles.connected(a, x * column + y - 1)) {
-                                            Bubbles.union(x * column + y, x * column + y - 1);
+                                //check left if filled
+                                if (x != 0 && grid[k][x - 1] == 1 && !exist) {
+                                    for (int y = 0; y < column; y++) {
+                                        if (Bubbles.connected(y, k * column + x - 1)) {
+                                            Bubbles.union(k * column + x, k * column + x - 1);
                                             exist = true;
                                             exist_loop = true;
                                             break;
                                         }
                                     }
                                 }
-                                //check for connected bubbles right if not at right edge then iterates from top to find connection and connection not already found
-                                if (y != column - 1 && grid[x][y + 1] == 1 && !exist) {
-                                    for (int a = 0; a < column; a++) {
-                                        if (Bubbles.connected(a, x * column + y + 1)) {
-                                            Bubbles.union(x * column + y, x * column + y + 1);
+                                //check right if filled
+                                if (x != column - 1 && grid[k][x + 1] == 1 && !exist) {
+                                    for (int y = 0; y < column; y++) {
+                                        if (Bubbles.connected(y, k * column + x + 1)) {
+                                            Bubbles.union(k * column + x, k * column + x + 1);
                                             exist = true;
                                             exist_loop = true;
                                             break;
                                         }
                                     }
                                 }
-
                             }
                             if (exist) {
                                 exist_column = true;
@@ -108,18 +89,14 @@ public class BubbleGrid {
                         }
                         exist_column = true;
                     }
-                    System.out.println(Bubbles);
-                }
-                //second run-through, with check in place for previously checked
-                else {
+                } else {
                     do {
                         exist_loop = false;
                         boolean exist_temp = false;
-
-                        for (int x = row - 1; x > 0; x--) {
-                            for (int y = column - 1; y >= 0; y--) {
+                        for (int k = row - 1; k > 0; k--) {
+                            for (int x = column - 1; x >= 0; x--) {
                                 for (int a = 0; a < column; a++) {
-                                    if (Bubbles.connected(a, x * column + y)) {
+                                    if (Bubbles.connected(a, k * column + x)) {
                                         exist_temp = true;
                                         break;
                                     }
@@ -128,52 +105,51 @@ public class BubbleGrid {
                                     exist_temp = false;
                                     continue;
                                 }
-                                if (grid[x][y] == 1) {
-                                    //check for connected bubbles left then iterates from top to find connection
-                                    if (grid[x - 1][y] == 1) {
-                                        for (int a = 0; a < column; a++) {
-                                            if (Bubbles.connected(a, (x - 1) * column + y)) {
-                                                Bubbles.union(x * column + y, (x - 1) * column + y);
+                                if (grid[k][x] == 1) {
+                                    //check up if filled
+                                    if (grid[k - 1][x] == 1) {
+                                        for (int y = 0; y < column; y++) {
+                                            if (Bubbles.connected(y, (k - 1) * column + x)) {
+                                                Bubbles.union(k * column + x, (k - 1) * column + x);
                                                 exist = true;
                                                 exist_loop = true;
                                                 break;
                                             }
                                         }
                                     }
-                                    //check for connected bubbles down if not at bottom edge then iterates from top to find connection
-                                    if (x != row - 1 && grid[x + 1][y] == 1) {
-                                        for (int a = 0; a < column; a++) {
-                                            if (Bubbles.connected(a, (x + 1) * column + y)) {
-                                                Bubbles.union(x * column + y, (x + 1) * column + y);
+                                    //check down if filled
+                                    if (k != row - 1 && grid[k + 1][x] == 1) {
+                                        for (int y = 0; y < column; y++) {
+                                            if (Bubbles.connected(y, (k + 1) * column + x)) {
+                                                Bubbles.union(k * column + x, (k + 1) * column + x);
                                                 exist = true;
                                                 exist_loop = true;
                                                 break;
                                             }
                                         }
                                     }
-                                    //check for connected bubbles left if not at left edge then iterates from top to find connection and connection not already found
-                                    if (y != 0 && grid[x][y - 1] == 1 && !exist) {
-                                        for (int a = 0; a < column; a++) {
-                                            if (Bubbles.connected(a, x * column + y - 1)) {
-                                                Bubbles.union(x * column + y, x * column + y - 1);
+                                    //check left if filled
+                                    if (x != 0 && grid[k][x - 1] == 1 && !exist) {
+                                        for (int y = 0; y < column; y++) {
+                                            if (Bubbles.connected(y, k * column + x - 1)) {
+                                                Bubbles.union(k * column + x, k * column + x - 1);
                                                 exist = true;
                                                 exist_loop = true;
                                                 break;
                                             }
                                         }
                                     }
-                                    //check for connected bubbles right if not at right edge then iterates from top to find connection and connection not already found
-                                    if (y != column - 1 && grid[x][y + 1] == 1 && !exist) {
-                                        for (int a = 0; a < column; a++) {
-                                            if (Bubbles.connected(a, x * column + y + 1)) {
-                                                Bubbles.union(x * column + y, x * column + y + 1);
+                                    //check right if filled
+                                    if (x != column - 1 && grid[k][x + 1] == 1 && !exist) {
+                                        for (int y = 0; y < column; y++) {
+                                            if (Bubbles.connected(y, k * column + x + 1)) {
+                                                Bubbles.union(k * column + x, k * column + x + 1);
                                                 exist = true;
                                                 exist_loop = true;
                                                 break;
                                             }
                                         }
                                     }
-
                                     if (exist) {
                                         exist_column = true;
                                     }
@@ -185,24 +161,18 @@ public class BubbleGrid {
                                 exist_column = true;
                             }
                         }
-                        System.out.println(Bubbles);
                     } while (exist_loop);
                 }
             }
-            //sets popped back to 1, runs through to find unpopped and subtracts
-            grid[darts[d][0]][darts[d][1]] = 1;
-            System.out.println(temp);
+            grid[darts[i][0]][darts[i][1]] = 1;
             for (int k = 0; k < column; k++) {
                 if (grid[0][k] == 1) {
-                    System.out.println(Bubbles.sizeOf(k));
                     temp = temp - Bubbles.sizeOf(k);
                 }
             }
-            result[d] = temp;
+            result[i] = temp;
             Bubbles = new UnionFind(row * column);
-            System.out.println("");
-            }
-    return result;
+        }
+        return result;
     }
-
 }

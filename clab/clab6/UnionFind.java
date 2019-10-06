@@ -87,7 +87,7 @@ public class UnionFind {
         if (rootP == rootQ) return;
 
         // make smaller root point to larger one
-        if (rootP < rootQ) {
+        if (size[rootP] < size[rootQ]) {
             parent[rootP] = rootQ;
             size[rootQ] += size[rootP];
         }

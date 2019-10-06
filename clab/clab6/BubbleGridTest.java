@@ -27,6 +27,18 @@ public class BubbleGridTest {
         validate(grid, darts, expected);
     }
 
+    public void testBasic3() {
+
+        int[][] grid = {{1, 1, 1},
+                        {1, 1, 1},
+                        {1, 1, 1},
+                        {1, 1, 1},};
+        int[][] darts = {{0, 0}};
+        int[] expected = {0};
+
+        validate(grid, darts, expected);
+    }
+
     private void validate(int[][] grid, int[][] darts, int[] expected) {
         BubbleGrid sol = new BubbleGrid(grid);
         assertArrayEquals(expected, sol.popBubbles(darts));
@@ -36,5 +48,6 @@ public class BubbleGridTest {
       BubbleGridTest b = new BubbleGridTest();
       b.testBasic();
       b.testBasic2();
+      b.testBasic3();
     }
 }
