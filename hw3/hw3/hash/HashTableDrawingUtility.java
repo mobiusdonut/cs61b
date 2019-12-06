@@ -1,6 +1,4 @@
-package hw3.hash;
 import java.awt.Font;
-import edu.princeton.cs.algs4.StdDraw;
 
 public class HashTableDrawingUtility {
     private static final double X_OFFSET = 0.1;
@@ -32,4 +30,4 @@ public class HashTableDrawingUtility {
             StdDraw.text(X_OFFSET * scalingFactor, yCoord, i + ": ");
         }
     }
-} 
+}
